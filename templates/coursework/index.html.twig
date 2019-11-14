@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Coursework index{% endblock %}
+
+{% block body %}
+    <h1>Coursework index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Deadline</th>
+                <th>CreditWeight</th>
+                <th>FeedbackDueDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for coursework in courseworks %}
+            <tr>
+                <td>{{ coursework.id }}</td>
+                <td>{{ coursework.name }}</td>
+                <td>{{ coursework.deadline ? coursework.deadline|date('Y-m-d') : '' }}</td>
+                <td>{{ coursework.creditWeight }}</td>
+                <td>{{ coursework.feedbackDueDate ? coursework.feedbackDueDate|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('coursework_show', {'id': coursework.id}) }}">show</a>
+                    <a href="{{ path('coursework_edit', {'id': coursework.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('coursework_new') }}">Create new</a>
+{% endblock %}

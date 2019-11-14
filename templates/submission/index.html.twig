@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Submission index{% endblock %}
+
+{% block body %}
+    <h1>Submission index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Mark</th>
+                <th>HandInDate</th>
+                <th>SecondSubmission</th>
+                <th>Grade</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for submission in submissions %}
+            <tr>
+                <td>{{ submission.id }}</td>
+                <td>{{ submission.mark }}</td>
+                <td>{{ submission.handInDate ? submission.handInDate|date('Y-m-d') : '' }}</td>
+                <td>{{ submission.secondSubmission ? 'Yes' : 'No' }}</td>
+                <td>{{ submission.grade }}</td>
+                <td>
+                    <a href="{{ path('submission_show', {'id': submission.id}) }}">show</a>
+                    <a href="{{ path('submission_edit', {'id': submission.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('submission_new') }}">Create new</a>
+{% endblock %}

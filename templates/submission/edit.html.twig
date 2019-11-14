@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Submission{% endblock %}
+
+{% block body %}
+    <h1>Edit Submission</h1>
+
+    {{ include('submission/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('submission_index') }}">back to list</a>
+
+    {{ include('submission/_delete_form.html.twig') }}
+{% endblock %}
