@@ -16,6 +16,11 @@ class AppFixtures extends Fixture
     private $students = array();
     private $courses = array();
     private $courseworks = array();
+    private $grades = array('A1', 'A2', 'A3', 'A4', 'A5',
+                            'B1', 'B2', 'B3',
+                            'C1', 'C2', 'C3',
+                            'D1', 'D2', 'D3',
+                            'MF', 'CF', 'BF');
 
     public function load(ObjectManager $manager)
     {
@@ -61,7 +66,7 @@ class AppFixtures extends Fixture
             $coursework->setCreditWeight($this->faker->numberBetween(1, 15));
             $coursework->setFeedbackDueDate($this->faker->dateTimeBetween('+1 month','+2 months'));
             // get a random Course object from the $courses array, using index - 1 to avoid undefined offset error
-            $coursework->setCourse($this->courses[rand(0, (count($this->courses) - 1))]);
+            $coursework->setCourse($this->courses[array_rand($this->courses)]);
 
             $manager->persist($coursework);
             $this->courseworks[] = $coursework;
@@ -74,12 +79,12 @@ class AppFixtures extends Fixture
     {
         for ($i = 1; $i <= 100; $i++) {
             $submission = new Submission();
-            $submission->setCoursework($this->courseworks[rand(0, (count($this->courseworks) - 1))]);
-            $submission->setStudent($this->students[rand(0, (count($this->students) - 1))]);
+            $submission->setCoursework($this->courseworks[array_rand($this->courseworks)]);
+            $submission->setStudent($this->students[array_rand($this->students)]);
             $submission->setMark($this->faker->numberBetween(1, 100));
             $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month'));
             $submission->setSecondSubmission(false);
-            $submission->setGrade("A1");
+            $submission->setGrade($this->grades[array_rand($this->grades)]);
 
             $manager->persist($submission);
         }
