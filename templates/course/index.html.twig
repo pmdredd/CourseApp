@@ -3,7 +3,11 @@
 {% block title %}Course index{% endblock %}
 
 {% block body %}
-    <h1>Course index</h1>
+    <h1>All Courses</h1>
+    <br>
+    <a class="btn btn-primary" href="{{ path('course_new') }}">Create Course</a>
+    <br>
+    <br>
     <table class="table">
         <thead>
         <tr>
@@ -26,10 +30,9 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">no Courses found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <a class="btn btn-primary" href="{{ path('course_new') }}">Create new</a>
 {% endblock %}

@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Coursework;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,10 +14,10 @@ class CourseworkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('deadline')
+            ->add('name', TextType::class, ['label' => 'Coursework name'])
+            ->add('deadline', DateType::class, ['widget' => 'single_text'])
             ->add('creditWeight')
-            ->add('feedbackDueDate')
+            ->add('feedbackDueDate', DateType::class, ['widget' => 'single_text'])
             ->add('course')
         ;
     }

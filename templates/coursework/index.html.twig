@@ -3,39 +3,44 @@
 {% block title %}Coursework index{% endblock %}
 
 {% block body %}
-    <h1>Coursework index</h1>
-
+    <h1>All Courseworks</h1>
+    <br>
+    <a class="btn btn-primary" href="{{ path('coursework_new') }}">Create Coursework</a>
+    <br>
+    <br>
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Deadline</th>
-                <th>CreditWeight</th>
-                <th>FeedbackDueDate</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Deadline</th>
+            <th>CreditWeight</th>
+            <th>FeedbackDueDate</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for coursework in courseworks %}
             <tr>
                 <td>{{ coursework.id }}</td>
                 <td>{{ coursework.name }}</td>
-                <td>{{ coursework.deadline ? coursework.deadline|date('Y-m-d') : '' }}</td>
+                <td>{{ coursework.deadline ? coursework.deadline|date('m/d/Y') : '' }}</td>
                 <td>{{ coursework.creditWeight }}</td>
-                <td>{{ coursework.feedbackDueDate ? coursework.feedbackDueDate|date('Y-m-d') : '' }}</td>
+                <td>{{ coursework.feedbackDueDate ? coursework.feedbackDueDate|date('m/d/Y') : '' }}</td>
                 <td>
-                    <a href="{{ path('coursework_show', {'id': coursework.id}) }}">show</a>
-                    <a href="{{ path('coursework_edit', {'id': coursework.id}) }}">edit</a>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-info" href="{{ path('coursework_show', {'id': coursework.id}) }}">Details</a>
+                        <a class="btn btn-secondary"
+                           href="{{ path('coursework_edit', {'id': coursework.id}) }}">Edit</a>
+                    </div>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">No Courseworks found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('coursework_new') }}">Create new</a>
 {% endblock %}

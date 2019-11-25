@@ -3,11 +3,8 @@
 {% block title %}Edit Coursework{% endblock %}
 
 {% block body %}
-    <h1>Edit Coursework</h1>
-
-    {{ include('coursework/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('coursework_index') }}">back to list</a>
-
-    {{ include('coursework/_delete_form.html.twig') }}
+    <div class="container">
+        <h1>Edit Coursework</h1>
+        {{ include('coursework/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
 {% endblock %}
