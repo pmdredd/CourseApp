@@ -4,14 +4,13 @@
 
 {% block body %}
     <h1>Course index</h1>
-
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for course in courses %}
@@ -19,8 +18,10 @@
                 <td>{{ course.id }}</td>
                 <td>{{ course.name }}</td>
                 <td>
-                    <a href="{{ path('course_show', {'id': course.id}) }}">show</a>
-                    <a href="{{ path('course_edit', {'id': course.id}) }}">edit</a>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-info" href="{{ path('course_show', {'id': course.id}) }}">Details</a>
+                        <a class="btn btn-secondary" href="{{ path('course_edit', {'id': course.id}) }}">Edit</a>
+                    </div>
                 </td>
             </tr>
         {% else %}
@@ -30,6 +31,5 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('course_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('course_new') }}">Create new</a>
 {% endblock %}
