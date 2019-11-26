@@ -3,12 +3,13 @@
 {% block title %}Student{% endblock %}
 
 {% block body %}
-    <h1>Student name: {{ student.name }}</h1>
+    <h1>Student Details</h1>
+    <hr>
+    <h2>Student name: {{ student.name }}</h2>
     <br>
     <div class="btn-group" role="group">
         <a class="btn btn-primary" href="{{ path('student_edit', {'id': student.id}) }}">Edit</a>
         {{ include('student/_delete_form.html.twig') }}
-        <a class="btn btn-secondary" href="{{ path('student_index') }}">Back to all Students</a>
     </div>
 
     <hr>
@@ -24,6 +25,7 @@
         </thead>
         <tbody>
         <h2>Submissions for this Coursework</h2>
+        <br>
         {% for submission in student.submissions %}
             <tr>
                 <td>{{ submission.id }}</td>
@@ -36,4 +38,6 @@
         {% endfor %}
         </tbody>
     </table>
+    <br>
+    <a class="btn btn-secondary" href="{{ path('student_index') }}">Back to all Students</a>
 {% endblock %}

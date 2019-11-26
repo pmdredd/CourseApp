@@ -18,7 +18,7 @@
     <div class="btn-group" role="group">
         <a class="btn btn-primary" href="{{ path('submission_edit', {'id': submission.id}) }}">Edit</a>
         {{ include('submission/_delete_form.html.twig') }}
-        <a class="btn btn-secondary" href="{{ path('submission_index') }}">Back to all Submissions</a>
     </div>
+    <a class="btn btn-secondary" href="{{ path('submission_index') }}">Back to all Submissions</a>
     <hr>
 {% endblock %}

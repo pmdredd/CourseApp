@@ -3,12 +3,13 @@
 {% block title %}Course{% endblock %}
 
 {% block body %}
-    <h1>Course name: {{ course.name }}</h1>
+    <h1>Course Details</h1>
+    <hr>
+    <h2>Course name: {{ course.name }}</h2>
     <br>
     <div class="btn-group" role="group">
         <a class="btn btn-primary" href="{{ path('course_edit', {'id': course.id}) }}">Edit</a>
         {{ include('course/_delete_form.html.twig') }}
-        <a class="btn btn-secondary" href="{{ path('course_index') }}">Back to all Courses</a>
     </div>
 
     <hr>
@@ -22,6 +23,7 @@
         </thead>
         <tbody>
         <h2>Courseworks for this Course</h2>
+        <br>
         {% for coursework in course.courseworks %}
             <tr>
                 <td>{{ coursework.id }}</td>
@@ -32,6 +34,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-
+    <br>
+    <a class="btn btn-secondary" href="{{ path('course_index') }}">Back to all Courses</a>
 {% endblock %}
