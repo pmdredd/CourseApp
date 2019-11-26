@@ -7,8 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Submission
- *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
  */
 class Submission
 {

@@ -23,7 +23,7 @@ class SubmissionController extends AbstractController
     {
         $submissions = $this->getDoctrine()
             ->getRepository(Submission::class)
-            ->findAll();
+            ->findAllWithStudents();
 
         return $this->render('submission/index.html.twig', [
             'submissions' => $submissions,
