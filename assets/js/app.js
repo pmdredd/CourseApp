@@ -18,4 +18,4 @@ require('bootstrap');
 // required for popper.js (which Bootstrap uses)
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
-})
+});

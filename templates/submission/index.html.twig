@@ -1,32 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Submission index{% endblock %}
+{% block title %}All Submissions{% endblock %}
 
 {% block body %}
     <h1>Submission index</h1>
-
+    <br>
+    <a class="btn btn-primary" href="{{ path('coursework_new') }}">Create Coursework</a>
+    <br>
+    <br>
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Mark</th>
-                <th>HandInDate</th>
-                <th>SecondSubmission</th>
-                <th>Grade</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Hand In Date</th>
+            <th>Second Submission?</th>
+            <th>Mark</th>
+            <th>Grade</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for submission in submissions %}
             <tr>
                 <td>{{ submission.id }}</td>
-                <td>{{ submission.mark }}</td>
-                <td>{{ submission.handInDate ? submission.handInDate|date('Y-m-d') : '' }}</td>
+                <td>{{ submission.handInDate ? submission.handInDate|date('d/m/Y') : '' }}</td>
                 <td>{{ submission.secondSubmission ? 'Yes' : 'No' }}</td>
+                <td>{{ submission.mark }}</td>
                 <td>{{ submission.grade }}</td>
                 <td>
-                    <a href="{{ path('submission_show', {'id': submission.id}) }}">show</a>
-                    <a href="{{ path('submission_edit', {'id': submission.id}) }}">edit</a>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-info" href="{{ path('submission_show', {'id': submission.id}) }}">show</a>
+                        <a class="btn btn-secondary"
+                           href="{{ path('submission_edit', {'id': submission.id}) }}">edit</a>
+                    </div>
                 </td>
             </tr>
         {% else %}
@@ -36,6 +42,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('submission_new') }}">Create new</a>
 {% endblock %}

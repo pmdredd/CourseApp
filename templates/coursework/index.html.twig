@@ -14,8 +14,8 @@
             <th>Id</th>
             <th>Name</th>
             <th>Deadline</th>
-            <th>CreditWeight</th>
-            <th>FeedbackDueDate</th>
+            <th>Credit Weight</th>
+            <th>Feedback Due Date</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -24,9 +24,9 @@
             <tr>
                 <td>{{ coursework.id }}</td>
                 <td>{{ coursework.name }}</td>
-                <td>{{ coursework.deadline ? coursework.deadline|date('m/d/Y') : '' }}</td>
+                <td>{{ coursework.deadline ? coursework.deadline|date('d/m/Y') : '' }}</td>
                 <td>{{ coursework.creditWeight }}</td>
-                <td>{{ coursework.feedbackDueDate ? coursework.feedbackDueDate|date('m/d/Y') : '' }}</td>
+                <td>{{ coursework.feedbackDueDate ? coursework.feedbackDueDate|date('d/m/Y') : '' }}</td>
                 <td>
                     <div class="btn-group" role="group">
                         <a class="btn btn-info" href="{{ path('coursework_show', {'id': coursework.id}) }}">Details</a>
