@@ -24,7 +24,8 @@
         {% for submission in submissions %}
             <tr>
                 <td>{{ submission.id }}</td>
-                <td><a href="{{ path('student_show', {id: submission.student.id }) }}">{{ submission.student.name }}</a></td>
+                <td><a href="{{ path('student_show', {id: submission.student.id }) }}">{{ submission.student.name }}</a>
+                </td>
                 <td>{{ submission.handInDate ? submission.handInDate|date('d/m/Y') : '' }}</td>
                 <td>{{ submission.secondSubmission ? 'Yes' : 'No' }}</td>
                 <td>{{ submission.mark }}</td>
