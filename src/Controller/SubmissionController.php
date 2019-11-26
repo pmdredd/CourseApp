@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/submission")
+ * @Route("/submissions")
  * @IsGranted("ROLE_USER")
  */
 class SubmissionController extends AbstractController

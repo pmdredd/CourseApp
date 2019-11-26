@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/coursework")
+ * @Route("/courseworks")
  * @IsGranted("ROLE_USER")
  */
 class CourseworkController extends AbstractController
