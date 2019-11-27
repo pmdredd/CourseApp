@@ -15,6 +15,8 @@ Make sure you have the following installed:
 - Git
     - This is used for version control and is required to get a (development) copy of the project to work on. Any contributions to the project must be made via Git and GitHub.
       It can be downloaded for Windows [here](https://git-scm.com/downloads)
+- Symfony installer
+    - Required to run and manage the Symfony application. Not strictly required, but extremely helpful and recommended. Get it [here](https://symfony.com/download)
 - (Optional) SQLiteBrowser
     - This can be used to view the development sqlite3 database and can be downloaded [here](https://sqlitebrowser.org/dl/)
 - (Optional) DBeaver Community Edition
