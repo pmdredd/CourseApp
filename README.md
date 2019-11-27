@@ -44,14 +44,14 @@ To get all of the project's dependencies, run the following command. This will g
 `composer install`
 
 You will need to set up the .env files for your local development environment. Copy the example .env and .env.test from the root directory of the project, paste them back and
-rename them to 'env.local' and 'env.test.local' respectively. You can do it using these 2 commands if you are using Git Bash:
+rename them to 'env.local' and 'env.test.local' respectively. You can also do it using these 2 commands if you are using Git Bash:
 
 `cp .env .env.local`
 
 `cp .env.test .env.test.local`
 
 In these files you will put your *personal* configuration details such as database username/passwords. 
-These files are not tracked by Git, and you should not allow them to be exposed to the internet.
+**These files are not tracked by Git, and you should not allow them to be exposed to the internet.**
 
 If you are using the default SQLite3 database, you do not have to alter these files. If you are instead using MySQL or PostgreSQL then you will need to change the database connection string.
 See more info [here](https://symfony.com/doc/current/doctrine.html#configuring-the-database)
