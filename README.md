@@ -1,7 +1,7 @@
 # Course Management application for UoD GA30003 course
 
-### Setting up the project
-#### Requirements
+## Setting up the project
+### Requirements
 This application is based on Symfony 4.4.
 
 Make sure you have the following installed:
@@ -20,9 +20,9 @@ Make sure you have the following installed:
 - (Optional) DBeaver Community Edition
     - If you choose to use MySQL or PostgreSQL instead of the default SQLite3 db, you can use DBeaver to view the database. See more info and download from [here](https://dbeaver.io/)    
 
-#### Local setup
+### Local setup
 If you are already familliar with Git, Composer and Symfony, you can skip to 'Running the project'
-##### (Windows)
+#### (Windows)
 To get a copy of the source code, navigate to the directory you want to keep the code in (e.g. user/Desktop/code/), 
 right-click the file explorer window and select 'Git Bash here'. If you do not have this option, please see the 'Git' section of the Requirements.
 Alternatively, you can open the directory in PowerShell.  
@@ -53,8 +53,8 @@ To get all the frontend dependencies, run the following command:
 And to compile all the frontend files for development, run this command:
 `yarn encore dev`
 
-#### Running the project
-##### (Windows)
+### Running the project
+#### (Windows)
 Once you've set up your database configuration, you can run the database migrations to get a copy of the db schema. Run the following command:
 
 `php bin/console doctrine:migrations:migrate`
