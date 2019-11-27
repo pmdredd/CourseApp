@@ -35,6 +35,10 @@ Run the following command to get the project code:
 
 `git clone https://github.com/pmdredd/CourseApp.git`
 
+Enter the cloned project's directory:
+
+`cd CourseApp`
+
 To get all of the project's dependencies, run the following command. This will go and get all the packages/libraries required for the project to work correctly:
 
 `composer install`
