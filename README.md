@@ -1,9 +1,12 @@
-# Course Management application for UoD GA30003 course
+# Course Management application for UoD GA30003/4 course
+
+The aim of this project is to provide an application lecturers can use to manage Courses, Courseworks, Students and Student Submissions. If you are a 2019 GA30003/4 student,
+you can find the full Sprint 1 and 2 requirement specifications in BlackBoard under 'Agile'.  
+
+This is a port of the original project to Symfony 4.4. The original project was built using plain procedural PHP + PDO and can be found here: https://github.com/Lairdd1989/Uni3rdAGILEProject  
 
 ## Setting up the project
 ### Requirements
-This application is based on Symfony 4.4.
-
 Make sure you have the following installed:
 
 - PHP 7.2+
