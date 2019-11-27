@@ -1,4 +1,4 @@
-#Course Management application for UoD GA30003 course
+# Course Management application for UoD GA30003 course
 
 ### Setting up the project
 #### Requirements
