@@ -6,6 +6,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Coursework
@@ -25,6 +26,14 @@ class Coursework
      * @var string
      *
      * @ORM\Column(name="name", type="text", length=50, nullable=false)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 75,
+     *      minMessage = "Coursework name must be at least {{ limit }} characters long",
+     *      maxMessage = "Coursework name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
@@ -32,6 +41,10 @@ class Coursework
      * @var \DateTime
      *
      * @ORM\Column(name="deadline", type="date", nullable=false)
+     *
+     * @Assert\NotBlank
+     * @Assert\Date
+     * @Assert\GreaterThan("today")
      */
     private $deadline;
 
@@ -39,6 +52,11 @@ class Coursework
      * @var int
      *
      * @ORM\Column(name="credit_weight", type="integer", nullable=false)
+     *
+     * @Assert\NotBlank
+     * @Assert\Positive(
+     *     message="The credit weight must be a greater than 0"
+     * )
      */
     private $creditWeight;
 
@@ -46,12 +64,17 @@ class Coursework
      * @var \DateTime
      *
      * @ORM\Column(name="feedback_due_date", type="date", nullable=false)
+     *
+     * @Assert\NotBlank
+     * @Assert\Date
+     * @Assert\GreaterThan("today")
      */
     private $feedbackDueDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Course", inversedBy="courseworks")
-     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
      */
     private $course;
 

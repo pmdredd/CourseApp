@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Course
@@ -24,6 +25,14 @@ class Course
      * @var string
      *
      * @ORM\Column(name="name", type="text", length=50, nullable=false)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Course name must be at least {{ limit }} characters long",
+     *      maxMessage = "Course name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
