@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Submission
@@ -22,20 +24,30 @@ class Submission
      * @var int|null
      *
      * @ORM\Column(name="mark", type="integer", nullable=true)
+
+     * @Assert\NotBlank
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 100,
+     *      notInRangeMessage = "Mark must between {{ min }} and {{ max }} inclusive",
+     * )
      */
     private $mark;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="hand_in_date", type="date", nullable=false)
+     *
+     * @Assert\NotBlank
+     * @Assert\Date
      */
     private $handInDate;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="second_submission", type="boolean", nullable=false)
+     * @ORM\Column(name="second_submission", type="boolean", nullable=false)*
      */
     private $secondSubmission = '0';
 
@@ -49,12 +61,16 @@ class Submission
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Coursework", inversedBy="submissions")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
      */
     private $coursework;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="submissions")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
      */
     private $student;
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,7 +39,7 @@ class Coursework
     private $name;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="deadline", type="date", nullable=false)
      *
@@ -61,7 +62,7 @@ class Coursework
     private $creditWeight;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="feedback_due_date", type="date", nullable=false)
      *

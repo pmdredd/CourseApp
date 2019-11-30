@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Submission;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,12 +13,11 @@ class SubmissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mark')
-            ->add('handInDate')
-            ->add('secondSubmission')
-            ->add('grade')
-            ->add('coursework')
             ->add('student')
+            ->add('coursework')
+            ->add('mark')
+            ->add('handInDate', DateType::class, ['widget' => 'single_text'])
+            ->add('secondSubmission')
         ;
     }
 
