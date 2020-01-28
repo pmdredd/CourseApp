@@ -3,7 +3,7 @@
 The aim of this project is to provide an application lecturers can use to manage Courses, Courseworks, Students and Student Submissions. If you are a 2019 GA30003/4 student,
 you can find the full Sprint 1 and 2 requirement specifications in BlackBoard under 'Agile'.  
 
-This is a port of the original project to Symfony 4.4. The original project was built using plain procedural PHP + PDO and can be found here: https://github.com/Lairdd1989/Uni3rdAGILEProject  
+This is a port of the original project to Symfony. The original project was built using plain procedural PHP + PDO and can be found here: https://github.com/Lairdd1989/Uni3rdAGILEProject  
 
 ## Setting up the project
 ### Requirements
@@ -13,8 +13,8 @@ Make sure you have the following installed:
     - If you are using windows, I recommend installing [XAMPP](https://www.apachefriends.org/download.html)
 - Composer 1.9+
     - This is used to manage the dependencies for the project (e.g. Symfony components, PHPUnit). Installation instructions can be found [here](https://getcomposer.org/download/)
-- Yarn 1.19 +
-    - This is used to manage and compile the frontend assets (css/js). Download instructions [here](https://yarnpkg.com/en/docs/install) 
+- Yarn 1.* 
+    - This is used to manage and compile the frontend assets (css/js). NOTE: make sure you download a 1.x version of Yarn as 2 is not compatible with this project. Download instructions [here](https://yarnpkg.com/en/docs/install) 
 - Git
     - This is used for version control and is required to get a (development) copy of the project to work on. Any contributions to the project must be made via Git and GitHub.
       It can be downloaded for Windows [here](https://git-scm.com/downloads)
@@ -75,4 +75,6 @@ Once you've set up your database configuration, you can run the database migrati
  And finally, to run the application, use this command:
  
  `php bin/console server:run`
+ 
+ Create a new user via the form to log into the application.
 
