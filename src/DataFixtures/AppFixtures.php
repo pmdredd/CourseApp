@@ -62,9 +62,11 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 30; $i++) {
             $coursework = new Coursework();
             $coursework->setName($this->faker->words(5, true));
-            $coursework->setDeadline($this->faker->dateTimeBetween('+01 days', '+1 month'));
+            // faker returns a datetime object, but our model stores dates as a string, so we must format the obj into a string
+            $deadline = $this->faker->dateTimeBetween('+01 days', '+1 month');
+            $coursework->setDeadline($deadline->format('Y-m-d')); 
             $coursework->setCreditWeight($this->faker->numberBetween(1, 15));
-            $coursework->setFeedbackDueDate($this->faker->dateTimeBetween('+1 month','+2 months'));
+            $coursework->setFeedbackDueDate($this->faker->dateTimeBetween('+1 month','+2 months')->format('Y-m-d'));
             // get a random Course object from the $courses array, using index - 1 to avoid undefined offset error
             $coursework->setCourse($this->courses[array_rand($this->courses)]);
 
@@ -82,7 +84,7 @@ class AppFixtures extends Fixture
             $submission->setCoursework($this->courseworks[array_rand($this->courseworks)]);
             $submission->setStudent($this->students[array_rand($this->students)]);
             $submission->setMark($this->faker->numberBetween(1, 100));
-            $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month'));
+            $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month')->format('Y-m-d'));
             $submission->setSecondSubmission(false);
             $submission->setGrade($this->grades[array_rand($this->grades)]);
 
