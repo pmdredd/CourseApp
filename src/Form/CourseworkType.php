@@ -15,9 +15,17 @@ class CourseworkType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'Coursework name'])
-            ->add('deadline', DateType::class, ['widget' => 'single_text'])
+            ->add('deadline', DateType::class, [
+                'widget' => 'single_text',
+                'input'=>'string',
+                'format' => 'yyyy-MM-dd',
+            ])
             ->add('creditWeight')
-            ->add('feedbackDueDate', DateType::class, ['widget' => 'single_text'])
+            ->add('feedbackDueDate', DateType::class, [
+                'widget' => 'single_text',
+                'input'=>'string',
+                'format' => 'yyyy-MM-dd',
+            ])
             ->add('course')
         ;
     }

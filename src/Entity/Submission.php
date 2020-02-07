@@ -37,7 +37,7 @@ class Submission
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="hand_in_date", type="date", nullable=false)
+     * @ORM\Column(name="hand_in_date", type="string", nullable=false)
      *
      * @Assert\NotBlank
      * @Assert\Date
@@ -115,12 +115,12 @@ class Submission
         return $this;
     }
 
-    public function getHandInDate(): ?DateTimeInterface
+    public function getHandInDate(): ?string
     {
         return $this->handInDate;
     }
 
-    public function setHandInDate(DateTimeInterface $handInDate): self
+    public function setHandInDate($handInDate): self
     {
         $this->handInDate = $handInDate;
 
@@ -150,6 +150,5 @@ class Submission
 
         return $this;
     }
-
 
 }

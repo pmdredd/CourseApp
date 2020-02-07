@@ -41,11 +41,9 @@ class Coursework
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="deadline", type="date", nullable=false)
+     * @ORM\Column(name="deadline", type="string", nullable=false)
      *
      * @Assert\NotBlank
-     * @Assert\Date
-     * @Assert\GreaterThan("today")
      */
     private $deadline;
 
@@ -64,11 +62,9 @@ class Coursework
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="feedback_due_date", type="date", nullable=false)
+     * @ORM\Column(name="feedback_due_date", type="string", nullable=false)
      *
      * @Assert\NotBlank
-     * @Assert\Date
-     * @Assert\GreaterThan("today")
      */
     private $feedbackDueDate;
 
@@ -149,12 +145,12 @@ class Coursework
         return $this;
     }
 
-    public function getDeadline(): ?DateTimeInterface
+    public function getDeadline(): ?string
     {
         return $this->deadline;
     }
 
-    public function setDeadline(DateTimeInterface $deadline): self
+    public function setDeadline(string $deadline): self
     {
         $this->deadline = $deadline;
 
@@ -173,12 +169,12 @@ class Coursework
         return $this;
     }
 
-    public function getFeedbackDueDate(): ?DateTimeInterface
+    public function getFeedbackDueDate(): ?string
     {
         return $this->feedbackDueDate;
     }
 
-    public function setFeedbackDueDate(DateTimeInterface $feedbackDueDate): self
+    public function setFeedbackDueDate(string $feedbackDueDate): self
     {
         $this->feedbackDueDate = $feedbackDueDate;
 
