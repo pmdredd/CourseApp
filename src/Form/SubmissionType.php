@@ -16,7 +16,11 @@ class SubmissionType extends AbstractType
             ->add('student')
             ->add('coursework')
             ->add('mark')
-            ->add('handInDate', DateType::class, ['widget' => 'single_text'])
+            ->add('handInDate', DateType::class, [
+                'widget' => 'single_text',
+                'input'=>'string',
+                'format' => 'yyyy-MM-dd',
+                ])
             ->add('secondSubmission')
         ;
     }
