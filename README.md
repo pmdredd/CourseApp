@@ -9,7 +9,7 @@ This is a port of the original project to Symfony. The original project was buil
 ### Requirements
 Make sure you have the following installed:
 
-- PHP 7.2+
+- PHP 7.3+
     - If you are using windows, I recommend installing [XAMPP](https://www.apachefriends.org/download.html)
 - Composer 1.9+
     - This is used to manage the dependencies for the project (e.g. Symfony components, PHPUnit). Installation instructions can be found [here](https://getcomposer.org/download/)
@@ -19,11 +19,9 @@ Make sure you have the following installed:
     - This is used for version control and is required to get a (development) copy of the project to work on. Any contributions to the project must be made via Git and GitHub.
       It can be downloaded for Windows [here](https://git-scm.com/downloads)
 - Symfony installer
-    - Required to run and manage the Symfony application. Not strictly required, but extremely helpful and recommended. Get it [here](https://symfony.com/download)
+    - Required to run and manage the Symfony application. Get it [here](https://symfony.com/download)
 - (Optional) SQLiteBrowser
     - This can be used to view the development sqlite3 database and can be downloaded [here](https://sqlitebrowser.org/dl/)
-- (Optional) DBeaver Community Edition
-    - If you choose to use MySQL or PostgreSQL instead of the default SQLite3 db, you can use DBeaver to view the database. See more info and download from [here](https://dbeaver.io/)    
 
 ### Local setup
 If you are already familliar with Git, Composer and Symfony, you can skip to 'Running the project'
@@ -57,9 +55,11 @@ If you are using the default SQLite3 database, you do not have to alter these fi
 See more info [here](https://symfony.com/doc/current/doctrine.html#configuring-the-database)
  
 To get all the frontend dependencies, run the following command:
+
 `yarn install`
 
 And to compile all the frontend files for development, run this command:
+
 `yarn encore dev`
 
 ### Running the project
@@ -74,7 +74,7 @@ Once you've set up your database configuration, you can run the database migrati
  
  And finally, to run the application, use this command:
  
- `php bin/console server:run`
+ `symfony server:start`
  
  Create a new user via the form to log into the application.
 
