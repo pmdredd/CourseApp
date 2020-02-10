@@ -46,7 +46,12 @@ class SubmissionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $grade = $gradeCalculator->calculateGrade($submission->getMark());
+            $mark = $submission->getMark();
+            if ($submission->isIsSecondSubmission()) {
+                $grade = $gradeCalculator->calculateGrade($mark, true);
+            } else {
+                $grade = $gradeCalculator->calculateGrade($mark, false);
+            }
             $submission->setGrade($grade);
 
             $entityManager->persist($submission);
@@ -88,7 +93,13 @@ class SubmissionController extends AbstractController
             /** @var Submission $submission */
             $submission = $form->getData();
 
-            $grade = $gradeCalculator->calculateGrade($submission->getMark());
+            $mark = $submission->getMark();
+            if ($submission->isIsSecondSubmission()) {
+                $grade = $gradeCalculator->calculateGrade($mark, true);
+            } else {
+                $grade = $gradeCalculator->calculateGrade($mark, false);
+            }
+
             $submission->setGrade($grade);
 
             $this->getDoctrine()->getManager()->flush();

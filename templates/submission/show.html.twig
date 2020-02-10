@@ -11,7 +11,7 @@
     <h4>For Coursework: <a href="{{ path('coursework_show', {'id': submission.coursework.id}) }}">{{ submission.coursework.name }}</a></h4>
     <br>
     <p>Hand in Date: {{ submission.handInDate ? submission.handInDate|date('d/m/Y') : '' }}</p>
-    <p>Second Submission? {{ submission.secondSubmission ? 'Yes' : 'No' }}</p>
+    <p>Second Submission? {{ submission.isSecondSubmission ? 'Yes' : 'No' }}</p>
     <p>Mark: {{ submission.mark }}</p>
     <p>Grade: {{ submission.grade }}</p>
     <br>

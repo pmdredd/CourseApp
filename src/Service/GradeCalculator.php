@@ -4,51 +4,102 @@
 namespace App\Service;
 
 
+/**
+ * Class GradeCalculator
+ * @package App\Service
+ *
+ * Service class containing logic for calculating grades (e.g. A1, B3, MF) from marks 0-100.
+ * When using this class you should call calculateGrade(), which calls out to the private functions
+ * that calculate different grades depending on if the submission has been submit a second time.
+ */
 class GradeCalculator
 {
-    public function calculateGrade($mark)
+    /**
+     * @param $mark
+     * @param $is_second_submission
+     * @return string
+     */
+    public function calculateGrade($mark, $is_second_submission)
+    {
+        if ($is_second_submission) {
+            return $this->calculateSecondSubmissionGrade($mark);
+        } else {
+            return $this->calculateFirstSubmissionGrade($mark);
+        }
+    }
+
+    /**
+     * @param $mark
+     * @return string
+     */
+    private function calculateFirstSubmissionGrade($mark)
     {
         $grade = "";
         if ($mark < 0 || $mark > 100) {
             throw new \DomainException("Mark value must be between 0 and 100");
         } elseif ($mark >= 95) {
-            $grade="A1";
+            $grade = "A1";
         } elseif ($mark >= 89) {
-            $grade="A2";
+            $grade = "A2";
         } elseif ($mark >= 83) {
-            $grade="A3";
+            $grade = "A3";
         } elseif ($mark >= 76) {
-            $grade="A4";
+            $grade = "A4";
         } elseif ($mark >= 70) {
-            $grade="A5";
+            $grade = "A5";
         } elseif ($mark >= 67) {
-            $grade="B1";
+            $grade = "B1";
         } elseif ($mark >= 64) {
-            $grade="B2";
+            $grade = "B2";
         } elseif ($mark >= 60) {
-            $grade="B3";
+            $grade = "B3";
         } elseif ($mark >= 57) {
-            $grade="C1";
+            $grade = "C1";
         } elseif ($mark >= 54) {
-            $grade="C2";
+            $grade = "C2";
         } elseif ($mark >= 50) {
-            $grade="C3";
+            $grade = "C3";
         } elseif ($mark >= 47) {
-            $grade="D1";
+            $grade = "D1";
         } elseif ($mark >= 44) {
-            $grade="D2";
+            $grade = "D2";
         } elseif ($mark >= 40) {
-            $grade="D3";
+            $grade = "D3";
         } elseif ($mark >= 37) {
-            $grade="MF1";
+            $grade = "MF1";
         } elseif ($mark >= 34) {
-            $grade="MF2";
+            $grade = "MF2";
         } elseif ($mark >= 30) {
-            $grade="MF3";
+            $grade = "MF3";
         } elseif ($mark >= 20) {
-            $grade="CF";
+            $grade = "CF";
         } elseif ($mark >= 0) {
-            $grade="BF";
+            $grade = "BF";
+        }
+        return $grade;
+    }
+
+    /**
+     * @param $mark
+     * @return string
+     */
+    private function calculateSecondSubmissionGrade($mark)
+    {
+        $grade = "";
+        if ($mark < 0 || $mark > 100) {
+            throw new \DomainException("Mark value must be between 0 and 100");
+        } elseif ($mark >= 40) {
+            $grade = "D3";
+        } elseif ($mark >= 37) {
+            $grade = "MF1";
+        } elseif ($mark >= 34) {
+            $grade = "MF2";
+        } elseif ($mark >= 30) {
+            $grade = "MF3";
+        } elseif ($mark >= 20) {
+            $grade = "CF";
+        } elseif ($mark >= 0) {
+            $grade = "BF";
         }
         return $grade;
     }

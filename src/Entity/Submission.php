@@ -47,9 +47,9 @@ class Submission
     /**
      * @var bool
      *
-     * @ORM\Column(name="second_submission", type="boolean", nullable=false)*
+     * @ORM\Column(name="is_second_submission", type="boolean", nullable=false)*
      */
-    private $secondSubmission = '0';
+    private $isSecondSubmission = '0';
 
     /**
      * @var string|null
@@ -127,14 +127,14 @@ class Submission
         return $this;
     }
 
-    public function getSecondSubmission(): ?bool
+    public function isIsSecondSubmission(): ?bool
     {
-        return $this->secondSubmission;
+        return $this->isSecondSubmission;
     }
 
-    public function setSecondSubmission(bool $secondSubmission): self
+    public function setIsSecondSubmission(bool $secondSubmission): self
     {
-        $this->secondSubmission = $secondSubmission;
+        $this->isSecondSubmission = $secondSubmission;
 
         return $this;
     }

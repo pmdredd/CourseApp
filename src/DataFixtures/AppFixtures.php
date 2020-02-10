@@ -92,8 +92,8 @@ class AppFixtures extends Fixture
             $submission->setStudent($this->students[array_rand($this->students)]);
             $submission->setMark($this->faker->numberBetween(1, 100));
             $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month')->format('Y-m-d'));
-            $submission->setSecondSubmission(false);
-            $submission->setGrade($this->gradeCalculator->calculateGrade($submission->getMark()));
+            $submission->setIsSecondSubmission($this->faker->boolean(10)); // 10% chance of being true
+            $submission->setGrade($this->gradeCalculator->calculateGrade($submission->getMark(), $submission->isIsSecondSubmission()));
 
             $manager->persist($submission);
         }

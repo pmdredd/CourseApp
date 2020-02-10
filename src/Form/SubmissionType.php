@@ -21,7 +21,7 @@ class SubmissionType extends AbstractType
                 'input'=>'string',
                 'format' => 'yyyy-MM-dd',
                 ])
-            ->add('secondSubmission')
+            ->add('isSecondSubmission')
         ;
     }
 
