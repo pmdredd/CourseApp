@@ -7,12 +7,14 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Coursework
  *
  * @ORM\Entity
+ * @ORM\Table(name="coursework", indexes={@Index(name="coursework_idx", columns={"id"})})
  */
 class Coursework
 {

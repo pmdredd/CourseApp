@@ -5,11 +5,13 @@ namespace App\Entity;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Submission
  * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
+ * @ORM\Table(name="submission", indexes={@Index(name="submission_idx", columns={"id"})})
  */
 class Submission
 {

@@ -5,12 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Course
  *
  * @ORM\Entity
+ * @ORM\Table(name="course", indexes={@Index(name="course_idx", columns={"id"})})
  */
 class Course
 {
