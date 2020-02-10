@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Submission;
 use App\Form\SubmissionType;
+use App\Service\GradeCalculator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,7 @@ class SubmissionController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, GradeCalculator $gradeCalculator): Response
     {
         $submission = new Submission();
         $form = $this->createForm(SubmissionType::class, $submission);
@@ -43,6 +44,10 @@ class SubmissionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $grade = $gradeCalculator->calculateGrade($submission->getMark());
+            $submission->setGrade($grade);
+
             $entityManager->persist($submission);
             $entityManager->flush();
 
