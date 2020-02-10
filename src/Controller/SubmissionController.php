@@ -34,6 +34,7 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/new", name="submission_new", methods={"GET","POST"})
      * @param Request $request
+     * @param GradeCalculator $gradeCalculator
      * @return Response
      */
     public function new(Request $request, GradeCalculator $gradeCalculator): Response
@@ -78,12 +79,18 @@ class SubmissionController extends AbstractController
      * @param Submission $submission
      * @return Response
      */
-    public function edit(Request $request, Submission $submission): Response
+    public function edit(Request $request, Submission $submission, GradeCalculator $gradeCalculator): Response
     {
         $form = $this->createForm(SubmissionType::class, $submission);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Submission $submission */
+            $submission = $form->getData();
+
+            $grade = $gradeCalculator->calculateGrade($submission->getMark());
+            $submission->setGrade($grade);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('submission_index');
