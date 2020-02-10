@@ -6,6 +6,7 @@ use App\Entity\Course;
 use App\Entity\Coursework;
 use App\Entity\Student;
 use App\Entity\Submission;
+use App\Service\GradeCalculator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
@@ -16,11 +17,17 @@ class AppFixtures extends Fixture
     private $students = array();
     private $courses = array();
     private $courseworks = array();
-    private $grades = array('A1', 'A2', 'A3', 'A4', 'A5',
-                            'B1', 'B2', 'B3',
-                            'C1', 'C2', 'C3',
-                            'D1', 'D2', 'D3',
-                            'MF', 'CF', 'BF');
+    private $gradeCalculator;
+
+    /**
+     * AppFixtures constructor.
+     * @param $gradeCalculator
+     */
+    public function __construct(GradeCalculator $gradeCalculator)
+    {
+        $this->gradeCalculator = $gradeCalculator;
+    }
+
 
     public function load(ObjectManager $manager)
     {
@@ -86,7 +93,7 @@ class AppFixtures extends Fixture
             $submission->setMark($this->faker->numberBetween(1, 100));
             $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month')->format('Y-m-d'));
             $submission->setSecondSubmission(false);
-            $submission->setGrade($this->grades[array_rand($this->grades)]);
+            $submission->setGrade($this->gradeCalculator->calculateGrade($submission->getMark()));
 
             $manager->persist($submission);
         }

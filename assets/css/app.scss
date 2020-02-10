@@ -4,4 +4,14 @@ body {
   header {
     margin-bottom: 30px;
   }
+
+  // Add asterisk on required fields for better UX
+  .form-group.required .control-label:after {
+    color:red;
+    content:" *";
+  }
+  .required:after {
+    color: red;
+    content: " *";
+  }
 }

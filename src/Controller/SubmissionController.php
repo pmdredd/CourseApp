@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Submission;
 use App\Form\SubmissionType;
+use App\Service\GradeCalculator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,9 +34,10 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/new", name="submission_new", methods={"GET","POST"})
      * @param Request $request
+     * @param GradeCalculator $gradeCalculator
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, GradeCalculator $gradeCalculator): Response
     {
         $submission = new Submission();
         $form = $this->createForm(SubmissionType::class, $submission);
@@ -43,6 +45,10 @@ class SubmissionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $grade = $gradeCalculator->calculateGrade($submission->getMark());
+            $submission->setGrade($grade);
+
             $entityManager->persist($submission);
             $entityManager->flush();
 
@@ -73,12 +79,18 @@ class SubmissionController extends AbstractController
      * @param Submission $submission
      * @return Response
      */
-    public function edit(Request $request, Submission $submission): Response
+    public function edit(Request $request, Submission $submission, GradeCalculator $gradeCalculator): Response
     {
         $form = $this->createForm(SubmissionType::class, $submission);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Submission $submission */
+            $submission = $form->getData();
+
+            $grade = $gradeCalculator->calculateGrade($submission->getMark());
+            $submission->setGrade($grade);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('submission_index');
