@@ -19,19 +19,25 @@
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Submission</th>
-            <th scope="col">Hand in date</th>
+            <th scope="col">Coursework</th>
+            <th scope="col">Hand in Date</th>
             <th scope="col">Mark</th>
+            <th scope="col">Is Second Submission?</th>
+            <th scope="col">Grade</th>
         </tr>
         </thead>
         <tbody>
-        <h2>Submissions for this Coursework</h2>
+        <h2>Submissions for this Student</h2>
         <br>
         {% for submission in student.submissions %}
             <tr>
                 <td>{{ submission.id }}</td>
                 <td><a href="{{ path('submission_show', {id: submission.id }) }}">Link to Submission</a></td>
+                <td><a href="{{ path('coursework_show', {id: submission.coursework.id }) }}">{{ submission.coursework.name }}</a></td>
                 <td>{{ submission.handInDate|date('m/d/Y') }}</td>
                 <td>{{ submission.mark }}</td>
+                <td>{{ submission.isSecondSubmission ? 'Yes' : 'No' }}</td>
+                <td>{{ submission.grade }}</td>
             </tr>
         {% else %}
             <p>No Submissions for this Student yet</p>
