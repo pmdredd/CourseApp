@@ -34,13 +34,19 @@ class Student
      *      max = 75,
      *      minMessage = "Student name must be at least {{ limit }} characters long",
      *      maxMessage = "Student name cannot be longer than {{ limit }} characters"
-     * )*/
+     * )
+     */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Submission", mappedBy="student")
      */
     private $submissions;
+
+    private $averageMark;
+
+    private $averageGrade;
+
 
     public function __construct()
     {
@@ -93,6 +99,38 @@ class Student
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAverageMark()
+    {
+        return $this->averageMark;
+    }
+
+    /**
+     * @param mixed $averageMark
+     */
+    public function setAverageMark($averageMark): void
+    {
+        $this->averageMark = $averageMark;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAverageGrade()
+    {
+        return $this->averageGrade;
+    }
+
+    /**
+     * @param mixed $averageGrade
+     */
+    public function setAverageGrade($averageGrade): void
+    {
+        $this->averageGrade = $averageGrade;
     }
 
     public function __toString()

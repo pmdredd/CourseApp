@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Student;
+use App\Entity\Submission;
 use App\Form\StudentType;
+use App\Service\GradeCalculator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,10 +60,21 @@ class StudentController extends AbstractController
     /**
      * @Route("/{id}", name="student_show", methods={"GET"})
      * @param Student $student
+     * @param GradeCalculator $gradeCalculator
      * @return Response
      */
-    public function show(Student $student): Response
+    public function show(Student $student, GradeCalculator $gradeCalculator): Response
     {
+        $averageMark = $this->getDoctrine()
+            ->getRepository(Submission::class)
+            ->findStudentAverageMark($student->getId());
+
+        $averageGrade = $gradeCalculator->calculateGrade($averageMark, false);
+
+        $student->setAverageMark($averageMark);
+        $student->setAverageGrade($averageGrade);
+
+
         return $this->render('student/show.html.twig', [
             'student' => $student,
         ]);
@@ -98,7 +111,7 @@ class StudentController extends AbstractController
      */
     public function delete(Request $request, Student $student): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$student->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $student->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($student);
             $entityManager->flush();

@@ -7,6 +7,11 @@
     <hr>
     <h2>Student name: {{ student.name }}</h2>
     <br>
+    <h5>Average mark: {{ student.averageMark ? student.averageMark : 'No marks yet' }}%</h5>
+    <br>
+    <h5>Average grade: {{ student.averageMark ? student.averageGrade : '' }}</h5>
+    <br>
+    <br>
     <div class="btn-group" role="group">
         <a class="btn btn-primary" href="{{ path('student_edit', {'id': student.id}) }}">Edit</a>
         {{ include('student/_delete_form.html.twig') }}

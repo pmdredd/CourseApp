@@ -26,4 +26,14 @@ class SubmissionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findStudentAverageMark($studentId)
+    {
+        return $this->createQueryBuilder('s')
+            ->select('avg(s.mark)')
+            ->andWhere('s.student = :studentId')
+            ->setParameter('studentId', $studentId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
