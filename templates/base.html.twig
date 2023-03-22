@@ -38,10 +38,11 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-
+                {%  if is_granted("ROLE_USER") %}
                     <li class="nav-item" style="margin-right: 10px;">
                         <a class="nav-link" style="color: white; font-size: 20px" href="#">{{ app.user.name }}</a>
                     </li>
+                {% endif %}
                     <li class="nav-item">
                         <a class="btn btn-light" style="font-size: 20px" href="{{ path('app_logout') }}">Logout</a>
                     </li>

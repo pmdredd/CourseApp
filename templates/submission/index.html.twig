@@ -11,7 +11,6 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Student</th>
             <th>Hand In Date</th>
             <th>Is Second Submission?</th>
@@ -23,7 +22,6 @@
         <tbody>
         {% for submission in submissions %}
             <tr>
-                <td>{{ submission.id }}</td>
                 <td><a href="{{ path('app_student_show', {id: submission.student.id }) }}">{{ submission.student.name }}</a>
                 </td>
                 <td>{{ submission.handInDate ? submission.handInDate|date('d/m/Y') : '' }}</td>
@@ -32,9 +30,9 @@
                 <td>{{ submission.grade }}</td>
                 <td class="text-end">
                     <div class="btn-group" role="group">
-                        <a class="btn btn-info" href="{{ path('app_submission_show', {'id': submission.id}) }}">show</a>
+                        <a class="btn btn-info" href="{{ path('app_submission_show', {'id': submission.id}) }}">Details</a>
                         <a class="btn btn-secondary"
-                           href="{{ path('app_submission_edit', {'id': submission.id}) }}">edit</a>
+                           href="{{ path('app_submission_edit', {'id': submission.id}) }}">Edit</a>
                     </div>
                 </td>
             </tr>
