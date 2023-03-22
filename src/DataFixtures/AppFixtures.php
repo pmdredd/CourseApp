@@ -8,26 +8,26 @@ use App\Entity\Student;
 use App\Entity\Submission;
 use App\Service\GradeCalculator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Faker\Generator;
 
 class AppFixtures extends Fixture
 {
-    private $faker;
-    private $students = array();
-    private $courses = array();
-    private $courseworks = array();
-    private $gradeCalculator;
+    private Generator $faker;
+    private array $students = array();
+    private array $courses = array();
+    private array $courseworks = array();
+    private GradeCalculator $gradeCalculator;
 
     /**
      * AppFixtures constructor.
-     * @param $gradeCalculator
+     * @param GradeCalculator $gradeCalculator
      */
     public function __construct(GradeCalculator $gradeCalculator)
     {
         $this->gradeCalculator = $gradeCalculator;
     }
-
 
     public function load(ObjectManager $manager)
     {
@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
 
         $this->loadStudents($manager);
         $this->loadCourses($manager);
-        $this->loadCourseworks($manager);
+        $this->loadCourseWorks($manager);
         $this->loadSubmissions($manager);
     }
 
@@ -64,17 +64,14 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadCourseworks(ObjectManager $manager)
+    private function loadCourseWorks(ObjectManager $manager)
     {
         for ($i = 1; $i <= 30; $i++) {
-            $coursework = new Coursework();
+            $coursework = new CourseWork();
             $coursework->setName($this->faker->words(5, true));
-            // faker returns a datetime object, but our model stores dates as a string, so we must format the obj into a string
-            $deadline = $this->faker->dateTimeBetween('+01 days', '+1 month');
-            $coursework->setDeadline($deadline->format('Y-m-d')); 
+            $coursework->setDeadline($this->faker->dateTime());
             $coursework->setCreditWeight($this->faker->numberBetween(1, 15));
-            $coursework->setFeedbackDueDate($this->faker->dateTimeBetween('+1 month','+2 months')->format('Y-m-d'));
-            // get a random Course object from the $courses array, using index - 1 to avoid undefined offset error
+            $coursework->setFeedbackDueDate($this->faker->dateTimeBetween('+1 month','+2 months'));
             $coursework->setCourse($this->courses[array_rand($this->courses)]);
 
             $manager->persist($coursework);
@@ -91,9 +88,9 @@ class AppFixtures extends Fixture
             $submission->setCoursework($this->courseworks[array_rand($this->courseworks)]);
             $submission->setStudent($this->students[array_rand($this->students)]);
             $submission->setMark($this->faker->numberBetween(1, 100));
-            $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month')->format('Y-m-d'));
-            $submission->setIsSecondSubmission($this->faker->boolean(10)); // 10% chance of being true
-            $submission->setGrade($this->gradeCalculator->calculateGrade($submission->getMark(), $submission->isIsSecondSubmission()));
+            $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month'));
+            $submission->setResubmitted($this->faker->boolean(10)); // 10% chance of being true
+            $submission->setGrade($this->gradeCalculator->calculateGrade($submission->getMark(), $submission->isResubmitted()));
 
             $manager->persist($submission);
         }

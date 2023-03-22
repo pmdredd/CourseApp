@@ -5,32 +5,33 @@
 {% block body %}
     <h1>All Courses</h1>
     <br>
-    <a class="btn btn-primary" href="{{ path('course_new') }}">Create Course</a>
+    <a class="btn btn-primary" href="{{ path('app_course_new') }}">Create Course</a>
     <br>
     <br>
+
     <table class="table">
         <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th class="text-end"></th>
+            </tr>
         </thead>
         <tbody>
         {% for course in courses %}
             <tr>
                 <td>{{ course.id }}</td>
                 <td>{{ course.name }}</td>
-                <td>
+                <td class="text-end">
                     <div class="btn-group" role="group">
-                        <a class="btn btn-info" href="{{ path('course_show', {'id': course.id}) }}">Details</a>
-                        <a class="btn btn-secondary" href="{{ path('course_edit', {'id': course.id}) }}">Edit</a>
+                        <a class="btn btn-info" href="{{ path('app_course_show', {'id': course.id}) }}">Details</a>
+                        <a class="btn btn-secondary" href="{{ path('app_course_edit', {'id': course.id}) }}">Edit</a>
                     </div>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no Courses found</td>
+                <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

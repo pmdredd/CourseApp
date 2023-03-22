@@ -2,81 +2,28 @@
 
 namespace App\Entity;
 
+use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Index;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Course
- *
- * @ORM\Entity
- * @ORM\Table(name="course", indexes={@Index(name="course_idx", columns={"id"})})
- */
+#[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", length=50, nullable=false)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *      min = 2,
-     *      max = 50,
-     *      minMessage = "Course name must be at least {{ limit }} characters long",
-     *      maxMessage = "Course name cannot be longer than {{ limit }} characters"
-     * )
-     */
-    private $name;
+    #[ORM\Column(length: 50)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Coursework", mappedBy="course")
-     */
-    private $courseworks;
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: CourseWork::class)]
+    private Collection $courseWorks;
 
     public function __construct()
     {
-        $this->courseworks = new ArrayCollection();
-    }
-
-    /**
-     * @return Collection|Coursework[]
-     */
-    public function getCourseworks(): Collection
-    {
-        return $this->courseworks;
-    }
-
-    public function addCoursework(Coursework $coursework): self
-    {
-        if (!$this->courseworks->contains($coursework)) {
-            $this->courseworks[] = $coursework;
-            $coursework->setCourse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCoursework(Coursework $coursework): self
-    {
-        if ($this->courseworks->contains($coursework)) {
-            $this->courseworks->removeElement($coursework);
-            // set the owning side to null (unless already changed)
-            if ($coursework->getCourse() === $this) {
-                $coursework->setCourse(null);
-            }
-        }
-
-        return $this;
+        $this->courseWorks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,10 +43,33 @@ class Course
         return $this;
     }
 
-    public function __toString()
+    /**
+     * @return Collection<int, CourseWork>
+     */
+    public function getCourseWorks(): Collection
     {
-        return $this->name;
+        return $this->courseWorks;
     }
 
+    public function addCourseWork(CourseWork $courseWork): self
+    {
+        if (!$this->courseWorks->contains($courseWork)) {
+            $this->courseWorks->add($courseWork);
+            $courseWork->setCourse($this);
+        }
 
+        return $this;
+    }
+
+    public function removeCourseWork(CourseWork $courseWork): self
+    {
+        if ($this->courseWorks->removeElement($courseWork)) {
+            // set the owning side to null (unless already changed)
+            if ($courseWork->getCourse() === $this) {
+                $courseWork->setCourse(null);
+            }
+        }
+
+        return $this;
+    }
 }

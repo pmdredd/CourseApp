@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CourseWork{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Edit CourseWork</h1>
+
+        {{ include('course_work/_form.html.twig', {'button_label': 'Update'}) }}
+
+        {{ include('course_work/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

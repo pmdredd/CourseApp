@@ -4,73 +4,43 @@ namespace App\Controller;
 
 use App\Entity\Submission;
 use App\Form\SubmissionType;
-use App\Service\GradeCalculator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Repository\SubmissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/submissions")
- * @IsGranted("ROLE_USER")
- */
+#[Route('/submission')]
 class SubmissionController extends AbstractController
 {
-    /**
-     * @Route("/", name="submission_index", methods={"GET"})
-     */
-    public function index(): Response
+    #[Route('/', name: 'app_submission_index', methods: ['GET'])]
+    public function index(SubmissionRepository $submissionRepository): Response
     {
-        $submissions = $this->getDoctrine()
-            ->getRepository(Submission::class)
-            ->findAllWithStudents();
-
         return $this->render('submission/index.html.twig', [
-            'submissions' => $submissions,
+            'submissions' => $submissionRepository->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/new", name="submission_new", methods={"GET","POST"})
-     * @param Request $request
-     * @param GradeCalculator $gradeCalculator
-     * @return Response
-     */
-    public function new(Request $request, GradeCalculator $gradeCalculator): Response
+    #[Route('/new', name: 'app_submission_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, SubmissionRepository $submissionRepository): Response
     {
         $submission = new Submission();
         $form = $this->createForm(SubmissionType::class, $submission);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $submissionRepository->save($submission, true);
 
-            $mark = $submission->getMark();
-            if ($submission->isIsSecondSubmission()) {
-                $grade = $gradeCalculator->calculateGrade($mark, true);
-            } else {
-                $grade = $gradeCalculator->calculateGrade($mark, false);
-            }
-            $submission->setGrade($grade);
-
-            $entityManager->persist($submission);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('submission_index');
+            return $this->redirectToRoute('app_submission_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('submission/new.html.twig', [
+        return $this->renderForm('submission/new.html.twig', [
             'submission' => $submission,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="submission_show", methods={"GET"})
-     * @param Submission $submission
-     * @return Response
-     */
+    #[Route('/{id}', name: 'app_submission_show', methods: ['GET'])]
     public function show(Submission $submission): Response
     {
         return $this->render('submission/show.html.twig', [
@@ -78,55 +48,31 @@ class SubmissionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="submission_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Submission $submission
-     * @return Response
-     */
-    public function edit(Request $request, Submission $submission, GradeCalculator $gradeCalculator): Response
+    #[Route('/{id}/edit', name: 'app_submission_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Submission $submission, SubmissionRepository $submissionRepository): Response
     {
         $form = $this->createForm(SubmissionType::class, $submission);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Submission $submission */
-            $submission = $form->getData();
+            $submissionRepository->save($submission, true);
 
-            $mark = $submission->getMark();
-            if ($submission->isIsSecondSubmission()) {
-                $grade = $gradeCalculator->calculateGrade($mark, true);
-            } else {
-                $grade = $gradeCalculator->calculateGrade($mark, false);
-            }
-
-            $submission->setGrade($grade);
-
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('submission_index');
+            return $this->redirectToRoute('app_submission_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('submission/edit.html.twig', [
+        return $this->renderForm('submission/edit.html.twig', [
             'submission' => $submission,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="submission_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Submission $submission
-     * @return Response
-     */
-    public function delete(Request $request, Submission $submission): Response
+    #[Route('/{id}', name: 'app_submission_delete', methods: ['POST'])]
+    public function delete(Request $request, Submission $submission, SubmissionRepository $submissionRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $submission->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($submission);
-            $entityManager->flush();
+        if ($this->isCsrfTokenValid('delete'.$submission->getId(), $request->request->get('_token'))) {
+            $submissionRepository->remove($submission, true);
         }
 
-        return $this->redirectToRoute('submission_index');
+        return $this->redirectToRoute('app_submission_index', [], Response::HTTP_SEE_OTHER);
     }
 }

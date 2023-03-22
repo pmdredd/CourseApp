@@ -7,13 +7,13 @@
     <hr>
     <h2>Student name: {{ student.name }}</h2>
     <br>
-    <h5>Average mark: {{ student.averageMark ? student.averageMark : 'No marks yet' }}%</h5>
+    <h5>Average mark: {{ student.averageMark ? student.averageMark ~ '%' : 'No marks yet' }}</h5>
     <br>
-    <h5>Average grade: {{ student.averageMark ? student.averageGrade : '' }}</h5>
+    <h5>Average grade: {{ student.averageMark ? student.averageGrade : 'No grades yet' }}</h5>
     <br>
     <br>
     <div class="btn-group" role="group">
-        <a class="btn btn-primary" href="{{ path('student_edit', {'id': student.id}) }}">Edit</a>
+        <a class="btn btn-primary" href="{{ path('app_student_edit', {'id': student.id}) }}">Edit</a>
         {{ include('student/_delete_form.html.twig') }}
     </div>
 
@@ -27,7 +27,7 @@
             <th scope="col">Coursework</th>
             <th scope="col">Hand in Date</th>
             <th scope="col">Mark</th>
-            <th scope="col">Is Second Submission?</th>
+            <th scope="col">Resubmission?</th>
             <th scope="col">Grade</th>
         </tr>
         </thead>
@@ -37,11 +37,11 @@
         {% for submission in student.submissions %}
             <tr>
                 <td>{{ submission.id }}</td>
-                <td><a href="{{ path('submission_show', {id: submission.id }) }}">Link to Submission</a></td>
-                <td><a href="{{ path('coursework_show', {id: submission.coursework.id }) }}">{{ submission.coursework.name }}</a></td>
+                <td><a href="{{ path('app_submission_show', {id: submission.id }) }}">Link to Submission</a></td>
+                <td><a href="{{ path('app_course_work_show', {id: submission.coursework.id }) }}">{{ submission.coursework.name }}</a></td>
                 <td>{{ submission.handInDate|date('m/d/Y') }}</td>
                 <td>{{ submission.mark }}</td>
-                <td>{{ submission.isSecondSubmission ? 'Yes' : 'No' }}</td>
+                <td>{{ submission.resubmitted ? 'Yes' : 'No' }}</td>
                 <td>{{ submission.grade }}</td>
             </tr>
         {% else %}
@@ -50,5 +50,5 @@
         </tbody>
     </table>
     <br>
-    <a class="btn btn-secondary" href="{{ path('student_index') }}">Back to all Students</a>
+    <a class="btn btn-secondary" href="{{ path('app_student_index') }}">Back to all Students</a>
 {% endblock %}

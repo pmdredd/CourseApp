@@ -2,86 +2,34 @@
 
 namespace App\Entity;
 
+use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Index;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Student
- *
- * @ORM\Entity
- * @ORM\Table(name="student", indexes={@Index(name="student_idx", columns={"id"})})
- */
+#[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", length=50, nullable=false)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *      min = 2,
-     *      max = 75,
-     *      minMessage = "Student name must be at least {{ limit }} characters long",
-     *      maxMessage = "Student name cannot be longer than {{ limit }} characters"
-     * )
-     */
-    private $name;
+    #[ORM\Column(length: 75)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Submission", mappedBy="student")
-     */
-    private $submissions;
+    #[ORM\Column(nullable: true)]
+    private ?int $averageMark = null;
 
-    private $averageMark;
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $averageGrade = null;
 
-    private $averageGrade;
-
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Submission::class)]
+    private Collection $submissions;
 
     public function __construct()
     {
         $this->submissions = new ArrayCollection();
-    }
-
-    /**
-     * @return Collection|Submission[]
-     */
-    public function getSubmissions(): Collection
-    {
-        return $this->submissions;
-    }
-
-    public function addSubmission(Submission $submission): self
-    {
-        if (!$this->submissions->contains($submission)) {
-            $this->submissions[] = $submission;
-            $submission->setStudent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubmission(Submission $submission): self
-    {
-        if ($this->submissions->contains($submission)) {
-            $this->submissions->removeElement($submission);
-            // set the owning side to null (unless already changed)
-            if ($submission->getStudent() === $this) {
-                $submission->setStudent(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getId(): ?int
@@ -101,42 +49,57 @@ class Student
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAverageMark()
+    public function getAverageMark(): ?int
     {
         return $this->averageMark;
     }
 
-    /**
-     * @param mixed $averageMark
-     */
-    public function setAverageMark($averageMark): void
+    public function setAverageMark(?int $averageMark): self
     {
         $this->averageMark = $averageMark;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAverageGrade()
+    public function getAverageGrade(): ?string
     {
         return $this->averageGrade;
     }
 
-    /**
-     * @param mixed $averageGrade
-     */
-    public function setAverageGrade($averageGrade): void
+    public function setAverageGrade(string $averageGrade): self
     {
         $this->averageGrade = $averageGrade;
+
+        return $this;
     }
 
-    public function __toString()
+    /**
+     * @return Collection<int, Submission>
+     */
+    public function getSubmissions(): Collection
     {
-        return $this->name;
+        return $this->submissions;
     }
 
+    public function addSubmission(Submission $submission): self
+    {
+        if (!$this->submissions->contains($submission)) {
+            $this->submissions->add($submission);
+            $submission->setStudent($this);
+        }
 
+        return $this;
+    }
+
+    public function removeSubmission(Submission $submission): self
+    {
+        if ($this->submissions->removeElement($submission)) {
+            // set the owning side to null (unless already changed)
+            if ($submission->getStudent() === $this) {
+                $submission->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
 }

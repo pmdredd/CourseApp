@@ -5,7 +5,7 @@
 {% block body %}
     <h1>All Students</h1>
     <br>
-    <a class="btn btn-primary" href="{{ path('student_new') }}">Create Student</a>
+    <a class="btn btn-primary" href="{{ path('app_student_new') }}">Create Student</a>
     <br>
     <br>
     <table class="table">
@@ -13,7 +13,7 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>actions</th>
+            <th class="text-end"></th>
         </tr>
         </thead>
         <tbody>
@@ -21,10 +21,10 @@
             <tr>
                 <td>{{ student.id }}</td>
                 <td>{{ student.name }}</td>
-                <td>
+                <td class="text-end">
                     <div class="btn-group" role="group">
-                        <a class="btn btn-info" href="{{ path('student_show', {'id': student.id}) }}">Details</a>
-                        <a class="btn btn-secondary" href="{{ path('student_edit', {'id': student.id}) }}">Edit</a>
+                        <a class="btn btn-info" href="{{ path('app_student_show', {'id': student.id}) }}">Details</a>
+                        <a class="btn btn-secondary" href="{{ path('app_student_edit', {'id': student.id}) }}">Edit</a>
                     </div>
                 </td>
             </tr>

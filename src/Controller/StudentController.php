@@ -3,120 +3,76 @@
 namespace App\Controller;
 
 use App\Entity\Student;
-use App\Entity\Submission;
 use App\Form\StudentType;
-use App\Service\GradeCalculator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Repository\StudentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/students")
- * @IsGranted("ROLE_USER")
- */
+#[Route('/student')]
 class StudentController extends AbstractController
 {
-    /**
-     * @Route("/", name="student_index", methods={"GET"})
-     */
-    public function index(): Response
+    #[Route('/', name: 'app_student_index', methods: ['GET'])]
+    public function index(StudentRepository $studentRepository): Response
     {
-        $students = $this->getDoctrine()
-            ->getRepository(Student::class)
-            ->findAll();
-
         return $this->render('student/index.html.twig', [
-            'students' => $students,
+            'students' => $studentRepository->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/new", name="student_new", methods={"GET","POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function new(Request $request): Response
+    #[Route('/new', name: 'app_student_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, StudentRepository $studentRepository): Response
     {
         $student = new Student();
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($student);
-            $entityManager->flush();
+            $studentRepository->save($student, true);
 
-            return $this->redirectToRoute('student_index');
+            return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('student/new.html.twig', [
+        return $this->renderForm('student/new.html.twig', [
             'student' => $student,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="student_show", methods={"GET"})
-     * @param Student $student
-     * @param GradeCalculator $gradeCalculator
-     * @return Response
-     */
-    public function show(Student $student, GradeCalculator $gradeCalculator): Response
+    #[Route('/{id}', name: 'app_student_show', methods: ['GET'])]
+    public function show(Student $student): Response
     {
-        $averageMark = $this->getDoctrine()
-            ->getRepository(Submission::class)
-            ->findStudentAverageMark($student->getId());
-
-        $averageGrade = $gradeCalculator->calculateGrade($averageMark, false);
-
-        $student->setAverageMark($averageMark);
-        $student->setAverageGrade($averageGrade);
-
-
         return $this->render('student/show.html.twig', [
             'student' => $student,
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="student_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Student $student
-     * @return Response
-     */
-    public function edit(Request $request, Student $student): Response
+    #[Route('/{id}/edit', name: 'app_student_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Student $student, StudentRepository $studentRepository): Response
     {
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $studentRepository->save($student, true);
 
-            return $this->redirectToRoute('student_index');
+            return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('student/edit.html.twig', [
+        return $this->renderForm('student/edit.html.twig', [
             'student' => $student,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="student_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Student $student
-     * @return Response
-     */
-    public function delete(Request $request, Student $student): Response
+    #[Route('/{id}', name: 'app_student_delete', methods: ['POST'])]
+    public function delete(Request $request, Student $student, StudentRepository $studentRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $student->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($student);
-            $entityManager->flush();
+        if ($this->isCsrfTokenValid('delete'.$student->getId(), $request->request->get('_token'))) {
+            $studentRepository->remove($student, true);
         }
 
-        return $this->redirectToRoute('student_index');
+        return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
     }
 }
