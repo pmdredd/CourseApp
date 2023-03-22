@@ -5,6 +5,9 @@
 {% block body %}
     <div class="container">
         <h1>Edit Student</h1>
+
         {{ include('student/_form.html.twig', {'button_label': 'Update'}) }}
+
+        {{ include('student/_delete_form.html.twig') }}
     </div>
 {% endblock %}

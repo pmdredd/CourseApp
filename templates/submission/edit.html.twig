@@ -4,8 +4,10 @@
 
 {% block body %}
     <div class="container">
-
         <h1>Edit Submission</h1>
+
         {{ include('submission/_form.html.twig', {'button_label': 'Update'}) }}
+
+        {{ include('submission/_delete_form.html.twig') }}
     </div>
 {% endblock %}

@@ -2,103 +2,36 @@
 
 namespace App\Entity;
 
-use DateTime;
-use DateTimeInterface;
+use App\Repository\SubmissionRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Index;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Submission
- * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
- * @ORM\Table(name="submission", indexes={@Index(name="submission_idx", columns={"id"})})
- */
+#[ORM\Entity(repositoryClass: SubmissionRepository::class)]
 class Submission
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="mark", type="integer", nullable=true)
+    #[ORM\Column(nullable: true)]
+    private ?int $mark = null;
 
-     * @Assert\NotBlank
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 100,
-     *      notInRangeMessage = "Mark must between {{ min }} and {{ max }} inclusive",
-     * )
-     */
-    private $mark;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $handInDate = null;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="hand_in_date", type="string", nullable=false)
-     *
-     * @Assert\NotBlank
-     * @Assert\Date
-     */
-    private $handInDate;
+    #[ORM\Column(nullable: true)]
+    private ?bool $resubmitted = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_second_submission", type="boolean", nullable=false)*
-     */
-    private $isSecondSubmission = '0';
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $grade = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="grade", type="text", length=3, nullable=true)
-     */
-    private $grade;
+    #[ORM\ManyToOne(inversedBy: 'submissions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CourseWork $coursework = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Coursework", inversedBy="submissions")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank
-     */
-    private $coursework;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="submissions")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank
-     */
-    private $student;
-
-    public function getCoursework(): ?Coursework
-    {
-        return $this->coursework;
-    }
-
-    public function setCoursework(?Coursework $coursework): self
-    {
-        $this->coursework = $coursework;
-
-        return $this;
-    }
-
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
-
-    public function setStudent(?Student $student): self
-    {
-        $this->student = $student;
-
-        return $this;
-    }
+    #[ORM\ManyToOne(inversedBy: 'submissions')]
+    private ?Student $student = null;
 
     public function getId(): ?int
     {
@@ -117,26 +50,26 @@ class Submission
         return $this;
     }
 
-    public function getHandInDate(): ?string
+    public function getHandInDate(): ?\DateTimeInterface
     {
         return $this->handInDate;
     }
 
-    public function setHandInDate($handInDate): self
+    public function setHandInDate(\DateTimeInterface $handInDate): self
     {
         $this->handInDate = $handInDate;
 
         return $this;
     }
 
-    public function isIsSecondSubmission(): ?bool
+    public function isResubmitted(): ?bool
     {
-        return $this->isSecondSubmission;
+        return $this->resubmitted;
     }
 
-    public function setIsSecondSubmission(bool $secondSubmission): self
+    public function setResubmitted(?bool $resubmitted): self
     {
-        $this->isSecondSubmission = $secondSubmission;
+        $this->resubmitted = $resubmitted;
 
         return $this;
     }
@@ -153,4 +86,27 @@ class Submission
         return $this;
     }
 
+    public function getCourseWork(): ?CourseWork
+    {
+        return $this->coursework;
+    }
+
+    public function setCourseWork(?CourseWork $coursework): self
+    {
+        $this->coursework = $coursework;
+
+        return $this;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?Student $student): self
+    {
+        $this->student = $student;
+
+        return $this;
+    }
 }

@@ -5,7 +5,7 @@
 {% block body %}
     <h1>All Submissions</h1>
     <br>
-    <a class="btn btn-primary" href="{{ path('submission_new') }}">Create Submission</a>
+    <a class="btn btn-primary" href="{{ path('app_submission_new') }}">Create Submission</a>
     <br>
     <br>
     <table class="table">
@@ -17,24 +17,24 @@
             <th>Is Second Submission?</th>
             <th>Mark</th>
             <th>Grade</th>
-            <th>Actions</th>
+            <th class="text-end"></th>
         </tr>
         </thead>
         <tbody>
         {% for submission in submissions %}
             <tr>
                 <td>{{ submission.id }}</td>
-                <td><a href="{{ path('student_show', {id: submission.student.id }) }}">{{ submission.student.name }}</a>
+                <td><a href="{{ path('app_student_show', {id: submission.student.id }) }}">{{ submission.student.name }}</a>
                 </td>
                 <td>{{ submission.handInDate ? submission.handInDate|date('d/m/Y') : '' }}</td>
-                <td>{{ submission.isSecondSubmission ? 'Yes' : 'No' }}</td>
+                <td>{{ submission.resubmitted ? 'Yes' : 'No' }}</td>
                 <td>{{ submission.mark }}%</td>
                 <td>{{ submission.grade }}</td>
-                <td>
+                <td class="text-end">
                     <div class="btn-group" role="group">
-                        <a class="btn btn-info" href="{{ path('submission_show', {'id': submission.id}) }}">show</a>
+                        <a class="btn btn-info" href="{{ path('app_submission_show', {'id': submission.id}) }}">show</a>
                         <a class="btn btn-secondary"
-                           href="{{ path('submission_edit', {'id': submission.id}) }}">edit</a>
+                           href="{{ path('app_submission_edit', {'id': submission.id}) }}">edit</a>
                     </div>
                 </td>
             </tr>

@@ -2,132 +2,42 @@
 
 namespace App\Entity;
 
-use DateTime;
-use DateTimeInterface;
+use App\Repository\CourseWorkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Index;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Coursework
- *
- * @ORM\Entity
- * @ORM\Table(name="coursework", indexes={@Index(name="coursework_idx", columns={"id"})})
- */
-class Coursework
+#[ORM\Entity(repositoryClass: CourseWorkRepository::class)]
+class CourseWork
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", length=50, nullable=false)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *      min = 5,
-     *      max = 75,
-     *      minMessage = "Coursework name must be at least {{ limit }} characters long",
-     *      maxMessage = "Coursework name cannot be longer than {{ limit }} characters"
-     * )
-     */
-    private $name;
+    #[ORM\Column(length: 75)]
+    private ?string $name = null;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="deadline", type="string", nullable=false)
-     *
-     * @Assert\NotBlank
-     */
-    private $deadline;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deadline = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="credit_weight", type="integer", nullable=false)
-     *
-     * @Assert\NotBlank
-     * @Assert\Positive(
-     *     message="The credit weight must be a greater than 0"
-     * )
-     */
-    private $creditWeight;
+    #[ORM\Column]
+    private ?int $creditWeight = null;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="feedback_due_date", type="string", nullable=false)
-     *
-     * @Assert\NotBlank
-     */
-    private $feedbackDueDate;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $feedbackDueDate = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Course", inversedBy="courseworks")
-     *
-     * @Assert\NotBlank
-     */
-    private $course;
+    #[ORM\ManyToOne(inversedBy: 'courseWorks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Course $course = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Submission", mappedBy="coursework")
-     */
-    private $submissions;
+    #[ORM\OneToMany(mappedBy: 'coursework', targetEntity: Submission::class)]
+    private Collection $submissions;
 
     public function __construct()
     {
         $this->submissions = new ArrayCollection();
-    }
-
-    public function getCourse(): ?Course
-    {
-        return $this->course;
-    }
-
-    public function setCourse(?Course $course): self
-    {
-        $this->course = $course;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Submission[]
-     */
-    public function getSubmissions(): Collection
-    {
-        return $this->submissions;
-    }
-
-    public function addSubmission(Submission $submission): self
-    {
-        if (!$this->submissions->contains($submission)) {
-            $this->submissions[] = $submission;
-            $submission->setCoursework($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubmission(Submission $submission): self
-    {
-        if ($this->submissions->contains($submission)) {
-            $this->submissions->removeElement($submission);
-            // set the owning side to null (unless already changed)
-            if ($submission->getCoursework() === $this) {
-                $submission->setCoursework(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getId(): ?int
@@ -147,12 +57,12 @@ class Coursework
         return $this;
     }
 
-    public function getDeadline(): ?string
+    public function getDeadline(): ?\DateTimeInterface
     {
         return $this->deadline;
     }
 
-    public function setDeadline(string $deadline): self
+    public function setDeadline(?\DateTimeInterface $deadline): self
     {
         $this->deadline = $deadline;
 
@@ -171,22 +81,57 @@ class Coursework
         return $this;
     }
 
-    public function getFeedbackDueDate(): ?string
+    public function getFeedbackDueDate(): ?\DateTimeInterface
     {
         return $this->feedbackDueDate;
     }
 
-    public function setFeedbackDueDate(string $feedbackDueDate): self
+    public function setFeedbackDueDate(?\DateTimeInterface $feedbackDueDate): self
     {
         $this->feedbackDueDate = $feedbackDueDate;
 
         return $this;
     }
 
-    public function __toString()
+    public function getCourse(): ?Course
     {
-        return $this->name;
+        return $this->course;
     }
 
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Submission>
+     */
+    public function getSubmissions(): Collection
+    {
+        return $this->submissions;
+    }
+
+    public function addSubmission(Submission $submission): self
+    {
+        if (!$this->submissions->contains($submission)) {
+            $this->submissions->add($submission);
+            $submission->setCoursework($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubmission(Submission $submission): self
+    {
+        if ($this->submissions->removeElement($submission)) {
+            // set the owning side to null (unless already changed)
+            if ($submission->getCoursework() === $this) {
+                $submission->setCoursework(null);
+            }
+        }
+
+        return $this;
+    }
 }

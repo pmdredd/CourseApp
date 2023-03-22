@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CourseWork index{% endblock %}
+
+{% block body %}
+    <h1>All Courseworks</h1>
+    <br>
+    <a class="btn btn-primary" href="{{ path('app_course_work_new') }}">Create Course</a>
+    <br>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Deadline</th>
+                <th>CreditWeight</th>
+                <th>FeedbackDueDate</th>
+                <th class="text-end"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for course_work in course_works %}
+            <tr>
+                <td>{{ course_work.id }}</td>
+                <td>{{ course_work.name }}</td>
+                <td>{{ course_work.deadline ? course_work.deadline|date('d/m/Y') : '' }}</td>
+                <td>{{ course_work.creditWeight }}</td>
+                <td>{{ course_work.feedbackDueDate ? course_work.feedbackDueDate|date('d/m/Y') : '' }}</td>
+                <td class="text-end">
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-info" href="{{ path('app_course_work_show', {'id': course_work.id}) }}">Details</a>
+                        <a class="btn btn-secondary" href="{{ path('app_course_work_edit', {'id': course_work.id}) }}">Edit</a>
+                </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

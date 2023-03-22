@@ -4,62 +4,43 @@ namespace App\Controller;
 
 use App\Entity\Course;
 use App\Form\CourseType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Repository\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/courses")
- * @IsGranted("ROLE_USER")
- */
+#[Route('/course')]
 class CourseController extends AbstractController
 {
-    /**
-     * @Route("/", name="course_index", methods={"GET"})
-     */
-    public function index(): Response
+    #[Route('/', name: 'app_course_index', methods: ['GET'])]
+    public function index(CourseRepository $courseRepository): Response
     {
-        $courses = $this->getDoctrine()
-            ->getRepository(Course::class)
-            ->findAll();
-
         return $this->render('course/index.html.twig', [
-            'courses' => $courses,
+            'courses' => $courseRepository->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/new", name="course_new", methods={"GET","POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function new(Request $request): Response
+    #[Route('/new', name: 'app_course_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CourseRepository $courseRepository): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($course);
-            $entityManager->flush();
+            $courseRepository->save($course, true);
 
-            return $this->redirectToRoute('course_index');
+            return $this->redirectToRoute('app_course_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('course/new.html.twig', [
+        return $this->renderForm('course/new.html.twig', [
             'course' => $course,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="course_show", methods={"GET"})
-     * @param Course $course
-     * @return Response
-     */
+    #[Route('/{id}', name: 'app_course_show', methods: ['GET'])]
     public function show(Course $course): Response
     {
         return $this->render('course/show.html.twig', [
@@ -67,43 +48,31 @@ class CourseController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="course_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Course $course
-     * @return Response
-     */
-    public function edit(Request $request, Course $course): Response
+    #[Route('/{id}/edit', name: 'app_course_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Course $course, CourseRepository $courseRepository): Response
     {
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $courseRepository->save($course, true);
 
-            return $this->redirectToRoute('course_index');
+            return $this->redirectToRoute('app_course_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('course/edit.html.twig', [
+        return $this->renderForm('course/edit.html.twig', [
             'course' => $course,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="course_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Course $course
-     * @return Response
-     */
-    public function delete(Request $request, Course $course): Response
+    #[Route('/{id}', name: 'app_course_delete', methods: ['POST'])]
+    public function delete(Request $request, Course $course, CourseRepository $courseRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$course->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($course);
-            $entityManager->flush();
+            $courseRepository->remove($course, true);
         }
 
-        return $this->redirectToRoute('course_index');
+        return $this->redirectToRoute('app_course_index', [], Response::HTTP_SEE_OTHER);
     }
 }

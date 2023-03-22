@@ -2,108 +2,77 @@
 
 namespace App\Controller;
 
-use App\Entity\Coursework;
-use App\Form\CourseworkType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Entity\CourseWork;
+use App\Form\CourseWorkType;
+use App\Repository\CourseWorkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/courseworks")
- * @IsGranted("ROLE_USER")
- */
-class CourseworkController extends AbstractController
+#[Route('/coursework')]
+class CourseWorkController extends AbstractController
 {
-    /**
-     * @Route("/", name="coursework_index", methods={"GET"})
-     */
-    public function index(): Response
+    #[Route('/', name: 'app_course_work_index', methods: ['GET'])]
+    public function index(CourseWorkRepository $courseWorkRepository): Response
     {
-        $courseworks = $this->getDoctrine()
-            ->getRepository(Coursework::class)
-            ->findAll();
-
-        return $this->render('coursework/index.html.twig', [
-            'courseworks' => $courseworks,
+        return $this->render('course_work/index.html.twig', [
+            'course_works' => $courseWorkRepository->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/new", name="coursework_new", methods={"GET","POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function new(Request $request): Response
+    #[Route('/new', name: 'app_course_work_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CourseWorkRepository $courseWorkRepository): Response
     {
-        $coursework = new Coursework();
-        $form = $this->createForm(CourseworkType::class, $coursework);
+        $courseWork = new CourseWork();
+        $form = $this->createForm(CourseWorkType::class, $courseWork);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($coursework);
-            $entityManager->flush();
+            $courseWorkRepository->save($courseWork, true);
 
-            return $this->redirectToRoute('coursework_index');
+            return $this->redirectToRoute('app_course_work_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('coursework/new.html.twig', [
-            'coursework' => $coursework,
-            'form' => $form->createView(),
+        return $this->renderForm('course_work/new.html.twig', [
+            'course_work' => $courseWork,
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="coursework_show", methods={"GET"})
-     * @param Coursework $coursework
-     * @return Response
-     */
-    public function show(Coursework $coursework): Response
+    #[Route('/{id}', name: 'app_course_work_show', methods: ['GET'])]
+    public function show(CourseWork $courseWork): Response
     {
-        return $this->render('coursework/show.html.twig', [
-            'coursework' => $coursework,
+        return $this->render('course_work/show.html.twig', [
+            'course_work' => $courseWork,
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="coursework_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Coursework $coursework
-     * @return Response
-     */
-    public function edit(Request $request, Coursework $coursework): Response
+    #[Route('/{id}/edit', name: 'app_course_work_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, CourseWork $courseWork, CourseWorkRepository $courseWorkRepository): Response
     {
-        $form = $this->createForm(CourseworkType::class, $coursework);
+        $form = $this->createForm(CourseWorkType::class, $courseWork);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $courseWorkRepository->save($courseWork, true);
 
-            return $this->redirectToRoute('coursework_index');
+            return $this->redirectToRoute('app_course_work_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('coursework/edit.html.twig', [
-            'coursework' => $coursework,
-            'form' => $form->createView(),
+        return $this->renderForm('course_work/edit.html.twig', [
+            'course_work' => $courseWork,
+            'form' => $form,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="coursework_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Coursework $coursework
-     * @return Response
-     */
-    public function delete(Request $request, Coursework $coursework): Response
+    #[Route('/{id}', name: 'app_course_work_delete', methods: ['POST'])]
+    public function delete(Request $request, CourseWork $courseWork, CourseWorkRepository $courseWorkRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$coursework->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($coursework);
-            $entityManager->flush();
+        if ($this->isCsrfTokenValid('delete'.$courseWork->getId(), $request->request->get('_token'))) {
+            $courseWorkRepository->remove($courseWork, true);
         }
 
-        return $this->redirectToRoute('coursework_index');
+        return $this->redirectToRoute('app_course_work_index', [], Response::HTTP_SEE_OTHER);
     }
 }
