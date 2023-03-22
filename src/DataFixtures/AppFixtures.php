@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Course;
-use App\Entity\Coursework;
+use App\Entity\CourseWork;
 use App\Entity\Student;
 use App\Entity\Submission;
 use App\Service\GradeCalculator;
@@ -15,8 +15,11 @@ use Faker\Generator;
 class AppFixtures extends Fixture
 {
     private Generator $faker;
+    /** @var array<Student> $students */
     private array $students = array();
+    /** @var array<Course> $courses */
     private array $courses = array();
+    /** @var array<CourseWork> $courseworks */
     private array $courseworks = array();
     private GradeCalculator $gradeCalculator;
 
@@ -29,7 +32,7 @@ class AppFixtures extends Fixture
         $this->gradeCalculator = $gradeCalculator;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->faker = Factory::create();
 
@@ -39,7 +42,7 @@ class AppFixtures extends Fixture
         $this->loadSubmissions($manager);
     }
 
-    private function loadStudents(ObjectManager $manager)
+    private function loadStudents(ObjectManager $manager): void
     {
         for ($i = 1; $i <= 100; $i++) {
             $student = new Student();
@@ -51,7 +54,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadCourses(ObjectManager $manager)
+    private function loadCourses(ObjectManager $manager): void
     {
         for ($i = 1; $i <= 10; $i++) {
             $course = new Course();
@@ -64,14 +67,14 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadCourseWorks(ObjectManager $manager)
+    private function loadCourseWorks(ObjectManager $manager): void
     {
         for ($i = 1; $i <= 30; $i++) {
             $coursework = new CourseWork();
             $coursework->setName($this->faker->words(5, true));
             $coursework->setDeadline($this->faker->dateTime());
             $coursework->setCreditWeight($this->faker->numberBetween(1, 15));
-            $coursework->setFeedbackDueDate($this->faker->dateTimeBetween('+1 month','+2 months'));
+            $coursework->setFeedbackDueDate($this->faker->dateTimeBetween('+1 month', '+2 months'));
             $coursework->setCourse($this->courses[array_rand($this->courses)]);
 
             $manager->persist($coursework);
@@ -81,7 +84,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadSubmissions(ObjectManager $manager)
+    private function loadSubmissions(ObjectManager $manager): void
     {
         for ($i = 1; $i <= 100; $i++) {
             $submission = new Submission();
@@ -90,7 +93,10 @@ class AppFixtures extends Fixture
             $submission->setMark($this->faker->numberBetween(1, 100));
             $submission->setHandInDate($this->faker->dateTimeBetween('+01 days', '+1 month'));
             $submission->setResubmitted($this->faker->boolean(10)); // 10% chance of being true
-            $submission->setGrade($this->gradeCalculator->calculateGrade($submission->getMark(), $submission->isResubmitted()));
+            $submission->setGrade($this->gradeCalculator->calculateGrade(
+                $submission->getMark(),
+                $submission->isResubmitted()
+            ));
 
             $manager->persist($submission);
         }

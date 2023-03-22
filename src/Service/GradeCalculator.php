@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service;
-
 
 /**
  * Class GradeCalculator
@@ -15,14 +13,14 @@ namespace App\Service;
 class GradeCalculator
 {
     /**
-     * @param $mark
-     * @param $is_second_submission
+     * @param $mark int
+     * @param $resubmitted bool
      * @return string
      */
-    public function calculateGrade($mark, $is_second_submission)
+    public function calculateGrade(int $mark, bool $resubmitted): string
     {
-        if ($is_second_submission) {
-            return $this->calculateSecondSubmissionGrade($mark);
+        if ($resubmitted) {
+            return $this->calculateResubmittedSubmissionGrade($mark);
         } else {
             return $this->calculateFirstSubmissionGrade($mark);
         }
@@ -32,7 +30,7 @@ class GradeCalculator
      * @param $mark
      * @return string
      */
-    private function calculateFirstSubmissionGrade($mark)
+    private function calculateFirstSubmissionGrade(int $mark): string
     {
         $grade = "";
         if ($mark < 0 || $mark > 100) {
@@ -73,17 +71,17 @@ class GradeCalculator
             $grade = "MF3";
         } elseif ($mark >= 20) {
             $grade = "CF";
-        } elseif ($mark >= 0) {
+        } else {
             $grade = "BF";
         }
         return $grade;
     }
 
     /**
-     * @param $mark
+     * @param $mark int
      * @return string
      */
-    private function calculateSecondSubmissionGrade($mark)
+    private function calculateResubmittedSubmissionGrade(int $mark): string
     {
         $grade = "";
         if ($mark < 0 || $mark > 100) {
@@ -98,7 +96,7 @@ class GradeCalculator
             $grade = "MF3";
         } elseif ($mark >= 20) {
             $grade = "CF";
-        } elseif ($mark >= 0) {
+        } else {
             $grade = "BF";
         }
         return $grade;
