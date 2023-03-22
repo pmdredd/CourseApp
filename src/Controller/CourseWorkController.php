@@ -34,7 +34,7 @@ class CourseWorkController extends AbstractController
             return $this->redirectToRoute('app_course_work_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('course_work/new.html.twig', [
+        return $this->render('course_work/new.html.twig', [
             'course_work' => $courseWork,
             'form' => $form,
         ]);
@@ -67,9 +67,12 @@ class CourseWorkController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_course_work_delete', methods: ['POST'])]
-    public function delete(Request $request, CourseWork $courseWork, CourseWorkRepository $courseWorkRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$courseWork->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        CourseWork $courseWork,
+        CourseWorkRepository $courseWorkRepository
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $courseWork->getId(), $request->request->get('_token'))) {
             $courseWorkRepository->remove($courseWork, true);
         }
 

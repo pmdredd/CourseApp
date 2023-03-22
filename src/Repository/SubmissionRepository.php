@@ -39,6 +39,20 @@ class SubmissionRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Submission[] Returns an array of Submission objects
+     */
+    public function findWithJoinedStudents(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'ASC')
+            ->innerJoin('s.student', 'student')
+            ->addSelect('student')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Submission[] Returns an array of Submission objects
 //     */

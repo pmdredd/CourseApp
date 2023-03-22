@@ -34,7 +34,7 @@ class StudentController extends AbstractController
             return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('student/new.html.twig', [
+        return $this->render('student/new.html.twig', [
             'student' => $student,
             'form' => $form,
         ]);
@@ -60,7 +60,7 @@ class StudentController extends AbstractController
             return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('student/edit.html.twig', [
+        return $this->render('student/edit.html.twig', [
             'student' => $student,
             'form' => $form,
         ]);
@@ -69,7 +69,7 @@ class StudentController extends AbstractController
     #[Route('/{id}', name: 'app_student_delete', methods: ['POST'])]
     public function delete(Request $request, Student $student, StudentRepository $studentRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$student->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $student->getId(), $request->request->get('_token'))) {
             $studentRepository->remove($student, true);
         }
 

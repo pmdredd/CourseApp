@@ -17,7 +17,7 @@ class SubmissionController extends AbstractController
     public function index(SubmissionRepository $submissionRepository): Response
     {
         return $this->render('submission/index.html.twig', [
-            'submissions' => $submissionRepository->findAll(),
+            'submissions' => $submissionRepository->findWithJoinedStudents(),
         ]);
     }
 
@@ -67,9 +67,12 @@ class SubmissionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_submission_delete', methods: ['POST'])]
-    public function delete(Request $request, Submission $submission, SubmissionRepository $submissionRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$submission->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        Submission $submission,
+        SubmissionRepository $submissionRepository
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $submission->getId(), $request->request->get('_token'))) {
             $submissionRepository->remove($submission, true);
         }
 
