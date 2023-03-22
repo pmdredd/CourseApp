@@ -32,6 +32,7 @@ class CourseWork
     #[ORM\JoinColumn(nullable: false)]
     private ?Course $course = null;
 
+    /** @var Collection<int, Submission> $submissions */
     #[ORM\OneToMany(mappedBy: 'coursework', targetEntity: Submission::class)]
     private Collection $submissions;
 

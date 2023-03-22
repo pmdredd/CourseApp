@@ -24,6 +24,7 @@ class Student
     #[ORM\Column(length: 2, nullable: true)]
     private ?string $averageGrade = null;
 
+    /** @var Collection<int, Submission> $submissions */
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Submission::class)]
     private Collection $submissions;
 

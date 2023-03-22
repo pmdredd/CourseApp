@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CourseRepository;
+use ContainerQ3EsCTo\get_Console_Command_ValidatorDebug_LazyService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,6 +19,7 @@ class Course
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    /** @var Collection<int, CourseWork> $courseWorks */
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: CourseWork::class)]
     private Collection $courseWorks;
 
