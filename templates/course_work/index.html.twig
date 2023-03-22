@@ -11,7 +11,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Deadline</th>
                 <th>CreditWeight</th>
@@ -22,7 +21,6 @@
         <tbody>
         {% for course_work in course_works %}
             <tr>
-                <td>{{ course_work.id }}</td>
                 <td>{{ course_work.name }}</td>
                 <td>{{ course_work.deadline ? course_work.deadline|date('d/m/Y') : '' }}</td>
                 <td>{{ course_work.creditWeight }}</td>
