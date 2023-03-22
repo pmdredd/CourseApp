@@ -19,14 +19,14 @@ class CourseWorkType extends AbstractType
             ->add('name', TextType::class, ['label' => 'Coursework name'])
             ->add('deadline', DateTimeType::class, [
                 'widget' => 'choice',
-                'input'=>'datetime',
+                'input' => 'datetime',
                 'format' => 'yyyy-MM-dd',
                 'html5' => false,
             ])
             ->add('creditWeight')
             ->add('feedbackDueDate', DateTimeType::class, [
                 'widget' => 'choice',
-                'input'=>'datetime',
+                'input' => 'datetime',
                 'format' => 'yyyy-MM-dd',
                 'html5' => false,
             ])
