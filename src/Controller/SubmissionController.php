@@ -34,7 +34,7 @@ class SubmissionController extends AbstractController
             return $this->redirectToRoute('app_submission_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('submission/new.html.twig', [
+        return $this->render('submission/new.html.twig', [
             'submission' => $submission,
             'form' => $form,
         ]);
@@ -60,7 +60,7 @@ class SubmissionController extends AbstractController
             return $this->redirectToRoute('app_submission_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('submission/edit.html.twig', [
+        return $this->render('submission/edit.html.twig', [
             'submission' => $submission,
             'form' => $form,
         ]);

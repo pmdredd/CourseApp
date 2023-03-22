@@ -60,7 +60,7 @@ class CourseWorkController extends AbstractController
             return $this->redirectToRoute('app_course_work_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('course_work/edit.html.twig', [
+        return $this->render('course_work/edit.html.twig', [
             'course_work' => $courseWork,
             'form' => $form,
         ]);
